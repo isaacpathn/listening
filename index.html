@@ -3,372 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>香港小學中文粵語聆聽模擬卷</title>
+    <title>小學中文粵語聆聽模擬卷</title>
     <style>
-        :root {
-            --primary-color: #4CAF50;
-            --secondary-color: #f4f4f9;
-            --text-color: #333;
-            --wrong-color: #f44336;
-        }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Microsoft JhengHei';
-            background-color: #eef2f3;
-            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
             line-height: 1.6;
-            margin: 0;
             padding: 20px;
-        }
-        .container {
             max-width: 800px;
             margin: 0 auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         h1 {
             text-align: center;
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--primary-color);
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
             padding-bottom: 10px;
         }
         .instructions {
-            background-color: var(--secondary-color);
+            background-color: #e8f4f8;
             padding: 15px;
-            border-left: 5px solid var(--primary-color);
-            margin-bottom: 25px;
-            border-radius: 4px;
+            border-radius: 8px;
+            margin-bottom: 20px;
         }
         .question-card {
-            margin-bottom: 25px;
+            background-color: #fff;
             padding: 20px;
-            border: 1px solid #ddd;
+            margin-bottom: 15px;
             border-radius: 8px;
-            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        .question-card:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .question-title {
+        .question-text {
             font-weight: bold;
             font-size: 1.1em;
             margin-bottom: 15px;
         }
-        .options {
-            list-style-type: none;
-            padding: 0;
-        }
-        .options li {
-            margin-bottom: 10px;
-        }
         .options label {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
+            display: block;
+            margin-bottom: 10px;
             padding: 10px;
             background-color: #f9f9f9;
-            border-radius: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
             transition: background-color 0.2s;
         }
         .options label:hover {
-            background-color: #e9e9e9;
+            background-color: #eef2f5;
         }
         input[type="radio"] {
-            margin-right: 15px;
-            transform: scale(1.2);
+            margin-right: 10px;
         }
-        .btn-submit {
+        button {
             display: block;
             width: 100%;
             padding: 15px;
-            font-size: 1.2em;
-            color: #fff;
-            background-color: var(--primary-color);
+            background-color: #3498db;
+            color: white;
             border: none;
             border-radius: 8px;
+            font-size: 1.2em;
             cursor: pointer;
+            margin-top: 20px;
             transition: background-color 0.3s;
-            margin-top: 30px;
         }
-        .btn-submit:hover {
-            background-color: #45a049;
+        button:hover {
+            background-color: #2980b9;
         }
         #result-container {
             display: none;
             margin-top: 30px;
             padding: 20px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
             border-radius: 8px;
+            color: #155724;
             text-align: center;
-            font-size: 1.5em;
-            font-weight: bold;
+            font-size: 1.2em;
         }
         .correct-answer {
-            background-color: #d4edda !important;
-            border-color: #c3e6cb !important;
-            color: #155724;
-        }
-        .wrong-answer {
-            background-color: #f8d7da !important;
-            border-color: #f5c6cb !important;
-            color: #721c24;
-        }
-        .feedback {
+            color: #e74c3c;
+            font-weight: bold;
             margin-top: 10px;
-            font-size: 0.9em;
-            color: #666;
             display: none;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>秋季大旅行 - 粵語聆聽模擬卷</h1>
+    <h1>小學中文粵語聆聽模擬卷</h1>
     
     <div class="instructions">
-        <strong>作答指示：</strong><br>
-        請先聆聽老師播放的錄音內容（約5分鐘）。聆聽完畢後，請根據錄音內容，選出每題最合適的答案。全卷共20題，每題5分，滿分100分。留意題目中可能會有陷阱！
+        <p><strong>指示：</strong>請先聆聽錄音內容（約5分鐘），然後回答以下20條選擇題。每題只有一個最適合的答案。完成後請點擊最下方的「提交答案」按鈕查看分數。</p>
     </div>
 
-    <form id="quiz-form">
-        <div id="quiz-container"></div>
-        <button type="button" class="btn-submit" onclick="submitQuiz()">遞交試卷並查看結果</button>
-    </form>
+    <form id="quiz-form"></form>
 
-    <div id="result-container"></div>
-</div>
+    <button type="button" onclick="submitQuiz()">提交答案</button>
 
-<script>
-    const questions = [
-        {
-            q: "1. 今次秋季大旅行的最終舉辦日期是哪一天？",
-            options: ["11月12日 (星期二)", "11月14日 (星期四)", "11月15日 (星期五)", "11月18日 (星期一)"],
-            answer: 1,
-            explanation: "錄音中提到原定12日，但因天氣改為14日星期四。"
-        },
-        {
-            q: "2. 為什麼大旅行的日期需要更改？",
-            options: ["因為校長沒空", "因為是公眾假期", "因為預測會有狂風暴雨", "因為旅遊巴公司出錯"],
-            answer: 2,
-            explanation: "老師明確指出因為天文台預測會有狂風暴雨。"
-        },
-        {
-            q: "3. 他們最終決定去哪裡旅行？",
-            options: ["西貢郊野公園", "大埔海濱公園", "香港濕地公園", "嘉道理農場"],
-            answer: 3,
-            explanation: "小芳提議去嘉道理農場，最後校長也同意了。"
-        },
-        {
-            q: "4. 小華反對去西貢郊野公園的原因是什麼？",
-            options: ["那裡沒有小賣部", "太遠且三年級已經去過", "那裡太多蚊子", "不能在那裡燒烤"],
-            answer: 1,
-            explanation: "小華說西貢太遠了，而且三年級的時候已經去過。"
-        },
-        {
-            q: "5. 學生旅行當天的集合時間是？",
-            options: ["早上8時正", "早上8時15分", "早上8時30分", "早上9時30分"],
-            answer: 1,
-            explanation: "平常8時上課，但當天要在8時15分集合，8時30分開車。"
-        },
-        {
-            q: "6. 學生集合的地點在哪裡？",
-            options: ["課室", "校務處", "有蓋操場", "學校大門口"],
-            answer: 2,
-            explanation: "老師要求大家到有蓋操場集合。"
-        },
-        {
-            q: "7. 關於午餐的安排，以下哪項是正確的？",
-            options: ["學校會統一訂購飯盒", "在農場的小賣部購買", "學生必須自備午餐", "大家一起燒烤"],
-            answer: 2,
-            explanation: "為免排隊浪費時間，學校規定必須自備午餐。"
-        },
-        {
-            q: "8. 老師規定學生最多可帶多少零用錢？",
-            options: ["20元", "50元", "80元", "100元"],
-            answer: 1,
-            explanation: "老師說最多只能帶50元零用錢應急或買紀念品。"
-        },
-        {
-            q: "9. 早上10時正會進行什麼活動？",
-            options: ["導賞員帶領參觀", "午餐時間", "攝影尋寶遊戲", "自由活動"],
-            answer: 0,
-            explanation: "早上10時正會有農場導賞員帶領參觀。"
-        },
-        {
-            q: "10. 老師明文禁止學生帶什麼物品去旅行？",
-            options: ["手機", "電子遊戲機", "零食", "毛公仔"],
-            answer: 1,
-            explanation: "老師說所有電子遊戲機一律禁止攜帶。"
-        },
-        {
-            q: "11. 今次導賞路線的主要參觀場館是什麼？",
-            options: ["蝴蝶園", "猛禽區 (貓頭鷹)", "猴子林", "爬行動物館"],
-            answer: 3,
-            explanation: "老師澄清導賞路線主要是去爬行動物館看蛇和龜。"
-        },
-        {
-            q: "12. 下午2時正的「攝影尋寶遊戲」，主要是尋找什麼？",
-            options: ["特定的植物", "隱藏的寶箱", "不同種類的鳥類", "農場職員"],
-            answer: 0,
-            explanation: "遊戲要求根據提示找出特定的植物並拍照。"
-        },
-        {
-            q: "13. A組的急救包由誰負責保管？",
-            options: ["王老師", "小明", "小華", "小芳"],
-            answer: 2,
-            explanation: "因為小華上過急救班，所以由他保管急救包。"
-        },
-        {
-            q: "14. 如果學生在農場走失了，老師建議的第一步做法是什麼？",
-            options: ["立刻打電話給爸爸媽媽", "留在原地並找農場職員幫忙", "大聲哭泣引起注意", "自己走回旅遊巴等候"],
-            answer: 1,
-            explanation: "老師強調不要亂跑，應留在原地找職員幫忙。"
-        },
-        {
-            q: "15. 旅行當天，學生必須穿著什麼服裝？",
-            options: ["便服", "夏季校服", "冬季校服", "冬季體育服"],
-            answer: 3,
-            explanation: "為了方便辨認，必須穿著整齊的冬季體育服。"
-        },
-        {
-            q: "16. 旅遊巴預計在什麼時間回到學校？",
-            options: ["下午3時正", "下午3時30分", "下午4時正", "下午4時15分"],
-            answer: 2,
-            explanation: "3時離開，預計4時正回到學校，4時15分解散。"
-        },
-        {
-            q: "17. 提出去「嘉道理農場」這個建議的人是誰？",
-            options: ["王老師", "小明", "小華", "小芳"],
-            answer: 3,
-            explanation: "是小芳覺得去嘉道理農場更有意義並提出建議。"
-        },
-        {
-            q: "18. 以下哪一項「不是」老師提醒全體學生必須帶的物品？",
-            options: ["飲用水", "防曬霜", "地圖", "雨傘"],
-            answer: 2,
-            explanation: "老師統一要求帶水、防曬、蚊怕水和雨傘；地圖是小芳負責拿的，不是全體必須帶的。"
-        },
-        {
-            q: "19. 誰負責在A組中點名？",
-            options: ["王老師", "小明", "小華", "小芳"],
-            answer: 1,
-            explanation: "小明是A組組長，負責點名。"
-        },
-        {
-            q: "20. 總結整段對話，會議的主要目的是什麼？",
-            options: ["教導學生如何製作三文治", "落實秋季大旅行的各項細節安排", "推廣保護爬蟲類動物的知識", "批評學生上課遲到"],
-            answer: 1,
-            explanation: "開場時老師已說明開會是為了落實秋季大旅行的細節。"
-        }
-    ];
+    <div id="result-container">
+        <h2>你的分數是：<span id="score"></span> / 20</h2>
+        <p>請查看上方題目核對正確答案（紅色字體為正確答案）。</p>
+    </div>
 
-    const quizContainer = document.getElementById('quiz-container');
+    <script>
+        const quizData = [
+            { q: "秋季大旅行的最終舉辦日期是哪一天？", options: ["11月15日", "11月18日", "11月20日", "11月25日"], ans: 1 },
+            { q: "今年秋季大旅行的目的地是哪裏？", options: ["西貢郊野公園", "大埔", "馬鞍山郊野公園", "香港濕地公園"], ans: 2 },
+            { q: "學生在旅行當日需要在甚麼時間集合？", options: ["上午8:00", "上午8:15", "上午8:30", "上午8:45"], ans: 1 },
+            { q: "旅行當日的集合地點在學校的哪裏？", options: ["課室", "操場", "禮堂", "校門外"], ans: 1 },
+            { q: "陳老師提醒每位同學最少要帶多少食水？", options: ["500毫升", "1公升", "1.5公升", "2公升"], ans: 1 },
+            { q: "旅行時「絕對不可以」帶以下哪一樣物品？", options: ["防曬霜", "毛巾", "電子遊戲機", "手提電話"], ans: 2 },
+            { q: "手提電話在甚麼情況下才可以拿出來使用？", options: ["在車上感到無聊時", "需要拍照留念時", "與同學分享遊戲時", "緊急情況下聯絡家人時"], ans: 3 },
+            { q: "如果旅行當天早上發出黃色暴雨警告，學校會有甚麼安排？", options: ["延期至下星期六", "改去博物館參觀", "穿着校服回校照常上課", "留在操場等待天氣好轉"], ans: 2 },
+            { q: "義工探訪活動是在哪裏進行？", options: ["開心安老院", "西貢郊野公園", "學校禮堂", "社區中心"], ans: 0 },
+            { q: "義工活動目前還欠缺多少名同學報名參加？", options: ["5名", "10名", "15名", "20名"], ans: 0 },
+            { q: "義工活動在哪一天舉行？", options: ["11月15日星期三", "11月18日星期六", "11月20日星期一", "11月25日星期六"], ans: 3 },
+            { q: "同學們最終決定買甚麼水果送給老人家？", options: ["蘋果和雪梨", "雪梨和香蕉", "蘋果和橙", "橙和香蕉"], ans: 2 },
+            { q: "為甚麼陳老師說不要買雪梨送給老人家？", options: ["因為雪梨太昂貴", "因為老人家咬不動", "因為雪梨與「分離」同音，意頭不好", "因為雪梨很難買到"], ans: 2 },
+            { q: "誰負責購買探訪活動所需的水果？", options: ["陳老師", "家明", "小華", "校長"], ans: 2 },
+            { q: "探訪活動當天，同學們需要在甚麼地點集合？", options: ["學校操場", "老人院門口", "地鐵站A出口", "巴士站"], ans: 2 },
+            { q: "探訪活動預計在下午幾點鐘結束？", options: ["下午1點鐘", "下午2點鐘", "下午4點鐘", "下午5點鐘"], ans: 2 },
+            { q: "家明打算在老人院表演甚麼節目？", options: ["唱歌", "跳舞", "吹直笛", "變魔術"], ans: 3 },
+            { q: "小華打算在老人院表演甚麼節目？", options: ["唱歌", "講故事", "吹直笛", "變魔術"], ans: 2 },
+            { q: "在這段對話中，陳老師對家明和小華的態度是怎樣的？", options: ["嚴厲批評", "充滿鼓勵和讚賞", "不聞不問", "表示懷疑"], ans: 1 },
+            { q: "這段對話最主要是在討論甚麼？", options: ["學校測驗的範圍", "購買水果的注意事項", "課外活動的收費問題", "學校旅行及老人院探訪活動的細節安排"], ans: 3 }
+        ];
 
-    // 渲染題目
-    questions.forEach((q, index) => {
-        const card = document.createElement('div');
-        card.className = 'question-card';
-        card.id = `card-${index}`;
+        const form = document.getElementById('quiz-form');
 
-        let optionsHtml = '';
-        q.options.forEach((opt, optIndex) => {
-            optionsHtml += `
-                <li>
-                    <label id="label-${index}-${optIndex}">
+        // Render questions
+        quizData.forEach((item, index) => {
+            let optionsHtml = '';
+            item.options.forEach((opt, optIndex) => {
+                optionsHtml += `
+                    <label>
                         <input type="radio" name="q${index}" value="${optIndex}">
                         ${opt}
                     </label>
-                </li>
+                `;
+            });
+
+            form.innerHTML += `
+                <div class="question-card" id="card-${index}">
+                    <div class="question-text">${index + 1}. ${item.q}</div>
+                    <div class="options">
+                        ${optionsHtml}
+                    </div>
+                    <div class="correct-answer" id="ans-${index}">
+                        正確答案：${item.options[item.ans]}
+                    </div>
+                </div>
             `;
         });
 
-        card.innerHTML = `
-            <div class="question-title">${q.q}</div>
-            <ul class="options">
-                ${optionsHtml}
-            </ul>
-            <div class="feedback" id="feedback-${index}">
-                <strong>解釋：</strong> ${q.explanation}
-            </div>
-        `;
-        quizContainer.appendChild(card);
-    });
+        function submitQuiz() {
+            let score = 0;
+            let allAnswered = true;
 
-    function submitQuiz() {
-        let score = 0;
-        let allAnswered = true;
-
-        // 檢查是否全部作答並計算分數
-        questions.forEach((q, index) => {
-            const selected = document.querySelector(`input[name="q${index}"]:checked`);
-            
-            if (!selected) {
-                allAnswered = false;
-                return;
-            }
-
-            const selectedValue = parseInt(selected.value);
-            const correctLabel = document.getElementById(`label-${index}-${q.answer}`);
-            const feedback = document.getElementById(`feedback-${index}`);
-            
-            // 顯示解釋
-            feedback.style.display = 'block';
-
-            // 重置之前的樣式
-            const allLabels = document.querySelectorAll(`input[name="q${index}"]`);
-            allLabels.forEach(radio => {
-                radio.parentElement.className = '';
-                radio.disabled = true; // 鎖定選項
+            quizData.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const answerDiv = document.getElementById(`ans-${index}`);
+                
+                if (!selected) {
+                    allAnswered = false;
+                } else {
+                    if (parseInt(selected.value) === item.ans) {
+                        score++;
+                        answerDiv.style.color = "#27ae60"; // Green for correct
+                        answerDiv.innerHTML = "答對了！";
+                    } else {
+                        answerDiv.style.color = "#e74c3c"; // Red for wrong
+                        answerDiv.innerHTML = `答錯了。正確答案應為：${item.options[item.ans]}`;
+                    }
+                }
+                answerDiv.style.display = "block";
             });
 
-            if (selectedValue === q.answer) {
-                score += 5;
-                correctLabel.classList.add('correct-answer');
-            } else {
-                const wrongLabel = document.getElementById(`label-${index}-${selectedValue}`);
-                wrongLabel.classList.add('wrong-answer');
-                correctLabel.classList.add('correct-answer'); // 標示正確答案
+            if (!allAnswered) {
+                alert("請確保已回答所有問題！未作答的題目將被視作錯誤。");
             }
-        });
 
-        if (!allAnswered) {
-            alert("請完成所有題目後再遞交！");
-            // 解除鎖定讓學生繼續作答
-            const allInputs = document.querySelectorAll('input[type="radio"]');
-            allInputs.forEach(input => input.disabled = false);
-            const feedbacks = document.querySelectorAll('.feedback');
-            feedbacks.forEach(f => f.style.display = 'none');
-            return;
+            document.getElementById('score').innerText = score;
+            document.getElementById('result-container').style.display = "block";
+            
+            // Scroll to bottom
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
-
-        const resultContainer = document.getElementById('result-container');
-        resultContainer.style.display = 'block';
-        
-        let message = "";
-        if (score >= 90) {
-            message = "太棒了！你的聆聽能力非常出色！🏆";
-            resultContainer.style.backgroundColor = "#d4edda";
-            resultContainer.style.color = "#155724";
-        } else if (score >= 60) {
-            message = "做得好！你掌握了大部分的資訊。👍";
-            resultContainer.style.backgroundColor = "#fff3cd";
-            resultContainer.style.color = "#856404";
-        } else {
-            message = "繼續努力！下次聆聽時要注意細節喔！💪";
-            resultContainer.style.backgroundColor = "#f8d7da";
-            resultContainer.style.color = "#721c24";
-        }
-
-        resultContainer.innerHTML = `你的總分是：${score} / 100 <br><span style="font-size:0.7em; font-weight:normal;">${message}</span>`;
-        
-        // 隱藏遞交按鈕
-        document.querySelector('.btn-submit').style.display = 'none';
-        
-        // 滾動到頂部查看結果
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-</script>
-
+    </script>
 </body>
 </html>
